@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>powered by sghq.network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="https://sghq.network" target="_blank" class="logo-link">
+                    <img src="/img/logo.png" alt="Minecraft Server Status">
+                    <h1>powered by sghq.network</h1>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="https://github.com/devRaiko/minecraft-query" target="_blank">GitHub</a></li>
+                    <li><a href="#api-docs">API Docs</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="search-container">
+                    <h2>Check Minecraft Server Status</h2>
+                    <p>Get real-time information about any Minecraft server</p>
+                    
+                    <div class="edition-tabs">
+                        <button type="button" class="tab-button active" data-edition="java">Java Edition</button>
+                        <button type="button" class="tab-button" data-edition="bedrock">Bedrock Edition</button>
+                    </div>
+                    
+                    <form id="server-form">
+                        <div class="input-group">
+                            <input type="text" id="server-input" placeholder="Server address (e.g. mc.hypixel.net)" required>
+                            <input type="number" id="port-input" placeholder="Port (default: 25565)" min="1" max="65535">
+                            <input type="hidden" id="edition-input" value="java">
+                            <button type="submit">
+                                <i class="fas fa-search"></i> Check
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="hero-particles" id="hero-particles"></div>
+        </section>
+
+        <section class="results hidden" id="results-section">
+            <div class="container">
+                <div class="server-card">
+                    <div class="server-header">
+                        <div class="server-icon">
+                            <img id="server-favicon" src="/img/default-server.png" alt="Server Icon">
+                        </div>
+                        <div class="server-info">
+                            <h2 id="server-address">mc.hypixel.net</h2>
+                            <div class="server-status" id="server-status">
+                                <span class="status-badge online">Online</span>
+                                <span class="status-version" id="server-version">1.8 - 1.20</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="server-details">
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <i class="fas fa-signal"></i>
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value" id="status-value">Online</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-gamepad"></i>
+                                <span class="detail-label">Version:</span>
+                                <span class="detail-value" id="version-value">1.8 - 1.20</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span class="detail-label">Players:</span>
+                                <span class="detail-value" id="players-value">78,452 / 200,000</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-network-wired"></i>
+                                <span class="detail-label">IP:</span>
+                                <span class="detail-value" id="ip-value">mc.hypixel.net:25565</span>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-item full-width">
+                                <i class="fas fa-comment"></i>
+                                <span class="detail-label">MOTD:</span>
+                                <span class="detail-value" id="motd-value">Hypixel Network</span>
+                            </div>
+                        </div>
+
+                        <div class="server-stats">
+                            <div class="stat-item">
+                                <div class="stat-circle">
+                                    <svg viewBox="0 0 36 36" class="circular-chart">
+                                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                                        <path id="player-percentage" class="circle" stroke-dasharray="30, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                                    </svg>
+                                    <div class="stat-text">
+                                        <span class="stat-value" id="player-percent">30%</span>
+                                        <span class="stat-label">Full</span>
+                                    </div>
+                                </div>
+                                <p>Player Capacity</p>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="ping-indicator">
+                                    <div class="ping-value" id="ping-value">156</div>
+                                    <div class="ping-unit">ms</div>
+                                </div>
+                                <p>Latency</p>
+                            </div>
+                        </div>
+                        
+                        <div class="players-section" id="players-section">
+                            <h3>Online Players <span id="player-count">(0)</span></h3>
+                            <div class="player-list" id="player-list">
+                                <!-- Player items will be generated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="mods-section hidden" id="mods-section">
+                            <h3>Mods <span id="mod-count">(0)</span></h3>
+                            <div class="mod-list" id="mod-list">
+                                <!-- Mod items will be generated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="error-message hidden" id="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p id="error-text">Could not connect to server.</p>
+                </div>
+                
+                <div class="api-response">
+                    <h3>JSON Response</h3>
+                    <pre id="json-response">// API response will be displayed here</pre>
+                </div>
+            </div>
+        </section>
+        
+        <section class="api-docs" id="api-docs">
+            <div class="container">
+                <h2>API Documentation</h2>
+                <p>Use our Minecraft server status API in your own projects:</p>
+                
+                <div class="api-example">
+                    <h3>Query Java Edition Server</h3>
+                    <code>GET /api/java/:server</code>
+                    <p>Queries a Java Edition server</p>
+                    
+                    <h4>Parameters</h4>
+                    <ul>
+                        <li><code>server</code>: Minecraft Java Edition server address (required)</li>
+                        <li><code>port</code>: Server port (optional, default: 25565)</li>
+                    </ul>
+                    
+                    <h4>Example Usage</h4>
+                    <code>GET /api/java/mc.hypixel.net</code>
+                </div>
+                
+                <div class="api-example">
+                    <h3>Query Bedrock Edition Server</h3>
+                    <code>GET /api/bedrock/:server</code>
+                    <p>Queries a Bedrock Edition server</p>
+                    
+                    <h4>Parameters</h4>
+                    <ul>
+                        <li><code>server</code>: Minecraft Bedrock Edition server address (required)</li>
+                        <li><code>port</code>: Server port (optional, default: 19132)</li>
+                    </ul>
+                    
+                    <h4>Example Usage</h4>
+                    <code>GET /api/bedrock/play.lbsg.net</code>
+                </div>
+                
+                <div class="api-example">
+                    <h4>Success Response</h4>
+<pre>{
+  "status": "success",
+  "ip": "mc.hypixel.net",
+  "port": 25565,
+  "edition": "java",
+  "online": true,
+  "version": "Requires MC 1.8 - 1.20",
+  "protocol": 47,
+  "ping_method": "modern",
+  "latency": 156,
+  "motd": "Hypixel Network [1.8-1.20]",
+  "players": {
+    "online": 78452,
+    "max": 200000,
+    "list": [...]
+  },
+  "favicon": "data:image/png;base64,..."
+}</pre>
+                    
+                    <h4>Error Response</h4>
+<pre>{
+  "status": "error",
+  "ip": "nonexistent.server.com",
+  "port": 25565,
+  "error": "Connection failed: getaddrinfo ENOTFOUND",
+  "online": false
+}</pre>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <a href="https://sghq.network" target="_blank" class="logo-link">
+                        <img src="/img/logo.png" alt="Minecraft Server Status">
+                        <p>powered by sghq.network</p>
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#api-docs">API Docs</a></li>
+                        <li><a href="https://github.com/devRaiko/mcsrvstat-us" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-about">
+                    <h4>About</h4>
+                    <p>A simple yet powerful Minecraft server status API built from scratch. Check the status of any Minecraft Java or Bedrock server in real-time.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Minecraft Server Status API. Not affiliated with Mojang AB.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html> 

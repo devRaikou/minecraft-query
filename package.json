@@ -1,0 +1,23 @@
+{
+  "name": "minecraft-query",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test-server": "node -e \"const http = require('http'); const url = process.argv[2] || 'eu.sghq.network'; console.log('Testing server:', url); http.get('http://localhost:3000/api/' + url, (res) => { let data = ''; res.on('data', chunk => { data += chunk; }); res.on('end', () => { console.log(JSON.parse(data)); }); }).on('error', err => { console.error('Error:', err.message); });\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "minecraft",
+    "server",
+    "status",
+    "api"
+  ],
+  "author": "devRaikou",
+  "license": "MIT",
+  "description": "Minecraft Server Status API built from scratch",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
