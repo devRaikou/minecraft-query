@@ -1,6 +1,6 @@
 # Minecraft Server Status Checker
 
-A comprehensive Minecraft server status checker application that supports both Java and Bedrock editions. Built from scratch without external API dependencies, powered by [sghq.network](https://sghq.network).
+A comprehensive Minecraft server status checker application that supports both Java and Bedrock editions. Built from scratch without external API dependencies, powered by [sghq.network](https://sghq.network)
 
 ## Features
 
